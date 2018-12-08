@@ -1,4 +1,4 @@
-package pl.project.trylma.client.models;
+package pl.project.trylma.models;
 
 public class PlayerOptions {
   //        1 < bot+real < 7
@@ -19,5 +19,9 @@ public class PlayerOptions {
 
   public void setBot(int bot) {
     this.bot = bot;
+  }
+
+  public int getNumOfPlayers(){
+    return bot+real;
   }
 }
