@@ -5,7 +5,8 @@ import java.io.Serializable;
 /**
  * Dodalem kontruktory, potrzebne w Board.
  */
-public class Coord {
+public class Coord implements Serializable {
+  static final long serialVersionUID = 8588980448693010399L;
   private int x;
   private int y;
 

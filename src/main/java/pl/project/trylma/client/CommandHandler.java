@@ -37,16 +37,7 @@ public class CommandHandler extends Thread {
 
     try {
       while (true) {
-        try {
           object = in.readObject();
-        }catch (EOFException e){
-          try {
-            sleep(10);
-          } catch (InterruptedException e1) {
-            e1.printStackTrace();
-          }
-          continue;
-        }
         if (object instanceof String) {
           command = (String)object;
           System.out.println(command);
@@ -87,8 +78,12 @@ public class CommandHandler extends Thread {
     }
   }
 
-  public void sendMove(Movement move) throws IOException {
-    out.writeObject(move);
+  public void sendMove(Movement move)  {
+    try {
+      out.writeObject(move);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void sendPlayersOptions(PlayerOptions playerOptions){
