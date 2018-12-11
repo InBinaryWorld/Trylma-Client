@@ -1,5 +1,6 @@
 package pl.project.trylma.gui;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -57,7 +58,6 @@ public class Gui extends Stage {
   private void setBoard() {
     Pane pane = new Pane();
     pane.setStyle("-fx-background-color: white");
-    this.pane.setCenter(pane);
     int ArrayXSize = arr[0].length;
     int ArrayYSize = arr.length;
 
@@ -112,6 +112,7 @@ public class Gui extends Stage {
       x = WidthUnit / 2;
       y += HeightUnit;
     }
+    Platform.runLater(()->this.pane.setCenter(pane));
   }
 
   public void makeMove(Movement movement) {

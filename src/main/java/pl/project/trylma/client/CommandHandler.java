@@ -34,30 +34,39 @@ public class CommandHandler extends Thread {
   public void run() {
     Object object;
     String command;
+
     try {
       while (true) {
+        try {
           object = in.readObject();
+        }catch (EOFException e){
+          try {
+            sleep(10);
+          } catch (InterruptedException e1) {
+            e1.printStackTrace();
+          }
+          continue;
+        }
         if (object instanceof String) {
           command = (String)object;
+          System.out.println(command);
           if (command.equals("SET_ID")) {
+
             client.setId((Owner)in.readObject());
           } else if (command.equals("SET_SERVER_OPTIONS")) {
             Platform.runLater(() ->client.setServerOptions());
           } else if (command.equals("MESSAGE")) {
+            String s =(String) in.readObject();
             Platform.runLater(()-> {
-              try {
-                client.setMessage((String) in.readObject());
-              } catch (IOException e) {
-                e.printStackTrace();
-              } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-              }
+              System.out.println("--->"+s);
+              client.setMessage(s);
             });
           } else if (command.equals("YOUR_MOVE")) {
             client.myTurn();
           } else if (command.equals("DO_MOVE")) {
             client.doMove((Movement)in.readObject());
-            client.doMove((Movement) in.readObject());
+          } else if (command.equals("SET_BASEBOARD")) {
+            client.start((int[][])in.readObject());
           } else if (command.equals("END_GAME")) {
             client.endGame((Result)in.readObject());
             break;
