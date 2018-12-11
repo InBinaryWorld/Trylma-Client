@@ -1,6 +1,7 @@
 package pl.project.trylma.client;
 
 
+import javafx.application.Platform;
 import pl.project.trylma.models.Movement;
 import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.PlayerOptions;
@@ -21,8 +22,9 @@ public class CommandHandler extends Thread {
     this.client=client;
     try {
       socket = new Socket("localhost", 9001);
-      in = new ObjectInputStream(socket.getInputStream());
       out = new ObjectOutputStream(socket.getOutputStream());
+      out.flush();
+      in = new ObjectInputStream(socket.getInputStream());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -39,13 +41,13 @@ public class CommandHandler extends Thread {
           if (command.equals("SET_ID")) {
             client.setId((Owner)in.readObject());
           } else if (command.equals("SET_SERVER_OPTIONS")) {
-            client.setServerOptions();
+            Platform.runLater(() ->client.setServerOptions());
           } else if (command.equals("MESSAGE")) {
-            client.setMessage((String)in.readObject());
+            client.setMessage((String) in.readObject());
           } else if (command.equals("YOUR_MOVE")) {
             client.myTurn();
           } else if (command.equals("DO_MOVE")) {
-            //client.doMove((Movement)in.readObject());
+            client.doMove((Movement)in.readObject());
             client.doMove((Movement) in.readObject());
           } else if (command.equals("END_GAME")) {
             client.endGame((Result)in.readObject());

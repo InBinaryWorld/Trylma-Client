@@ -10,11 +10,10 @@ public class Client extends Application {
   }
 
   public void start(Stage primaryStage) throws Exception {
-    TrylmaClient trylmaClient = new TrylmaClient();
-    trylmaClient.getGui().refresh();
-    primaryStage = trylmaClient.getGui();
-    primaryStage.show();
-    trylmaClient.myTurn();
+     TrylmaClient trylmaClient = new TrylmaClient();
+//    trylmaClient.getGui().refresh();
+      primaryStage = trylmaClient.getGui();
+      primaryStage.show();
 //    Field field = new Field(new Coord(0, 4), Owner.FIRST);
 //    Coord coord = new Coord(7, 5);
 //    trylmaClient.doMove(new Movement(field, coord, Owner.FIRST));

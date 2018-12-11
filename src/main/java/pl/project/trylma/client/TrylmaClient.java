@@ -1,5 +1,6 @@
 package pl.project.trylma.client;
 
+import javafx.application.Platform;
 import javafx.scene.control.ChoiceDialog;
 import pl.project.trylma.gui.Gui;
 import pl.project.trylma.models.Movement;
@@ -20,7 +21,6 @@ class TrylmaClient {
   TrylmaClient(){
     commandHandler = new CommandHandler(this);
     gui = new Gui();
-    id = Owner.FIRST;
     gui.setCommandHandler(this.commandHandler);
     commandHandler.start();
   }
@@ -53,8 +53,10 @@ class TrylmaClient {
     dialog.setTitle("Trylma");
     dialog.setHeaderText("Number of players");
     dialog.setContentText("Choose number of real players:");
+
     Optional<Integer> result = dialog.showAndWait();
-    if (result.isPresent()){
+
+    if (result.isPresent()) {
       real = result.get();
     }
     return real;
@@ -105,7 +107,7 @@ class TrylmaClient {
     // z dowolnego miejsca w programie.
     int real = numOfReal();
     int bot = numOfBot(real);
-    commandHandler.sendPlayersOptions(new PlayerOptions(bot, real));
+    Platform.runLater(() -> commandHandler.sendPlayersOptions(new PlayerOptions(bot, real)));
   }
 
   void setMessage(String message) {
@@ -126,7 +128,6 @@ class TrylmaClient {
     // u każdego gracza w grze.
     gui.activate(id);
   }
-
 
   public void start(int [][] map) {
     gui.setFields(map);
