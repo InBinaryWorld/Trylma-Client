@@ -1,16 +1,17 @@
 package pl.project.trylma.client;
 
-import pl.project.trylma.client.models.Move;
-import pl.project.trylma.client.models.Owner;
-import pl.project.trylma.client.models.PlayerOptions;
-import pl.project.trylma.client.models.Result;
+
+import pl.project.trylma.models.Movement;
+import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.PlayerOptions;
+import pl.project.trylma.models.Result;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-class CommandHandler extends Thread {
+public class CommandHandler extends Thread {
   private TrylmaClient client;
   private Socket socket;
   private ObjectInputStream in;
@@ -44,7 +45,8 @@ class CommandHandler extends Thread {
           } else if (command.equals("YOUR_MOVE")) {
             client.myTurn();
           } else if (command.equals("DO_MOVE")) {
-            client.doMove((Move)in.readObject());
+            //client.doMove((Movement)in.readObject());
+            client.doMove((Movement) in.readObject());
           } else if (command.equals("END_GAME")) {
             client.endGame((Result)in.readObject());
             break;
@@ -65,7 +67,7 @@ class CommandHandler extends Thread {
     }
   }
 
-  public  void sendMove(Move move) throws IOException {
+  public void sendMove(Movement move) throws IOException {
     out.writeObject(move);
   }
 

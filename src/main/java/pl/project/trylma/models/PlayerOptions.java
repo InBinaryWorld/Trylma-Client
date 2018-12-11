@@ -1,7 +1,6 @@
 package pl.project.trylma.models;
 
 public class PlayerOptions {
-  //        1 < bot+real < 7
   private int bot;
   private int real;
 
@@ -23,5 +22,10 @@ public class PlayerOptions {
 
   public int getNumOfPlayers(){
     return bot+real;
+  }
+
+  public PlayerOptions(int bot, int real) {
+    this.bot = bot;
+    this.real = real;
   }
 }

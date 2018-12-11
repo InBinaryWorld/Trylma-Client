@@ -15,7 +15,7 @@ public enum Owner {
   SIXTH(6);
 
   private final int value;
-  private Owner(int v) {
+  Owner(int v) {
     this.value = v;
   }
   public int getValue() {
