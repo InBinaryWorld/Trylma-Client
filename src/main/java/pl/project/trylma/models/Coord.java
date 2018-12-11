@@ -1,5 +1,7 @@
 package pl.project.trylma.models;
 
+import java.io.Serializable;
+
 /**
  * Dodalem kontruktory, potrzebne w Board.
  */

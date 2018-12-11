@@ -1,5 +1,7 @@
 package pl.project.trylma.models;
 
-public enum Result {
+import java.io.Serializable;
+
+public enum Result implements Serializable {
   Win,Defeat
 }

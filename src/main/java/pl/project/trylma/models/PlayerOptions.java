@@ -1,6 +1,9 @@
 package pl.project.trylma.models;
 
-public class PlayerOptions {
+import java.io.Serializable;
+
+public class PlayerOptions  implements Serializable {
+  static final long serialVersionUID = 2588980448693010399L;
   private int bot;
   private int real;
 

@@ -1,5 +1,7 @@
 package pl.project.trylma.models;
 
+import java.io.Serializable;
+
 /**
  * Enumy reprezentuja inty, to pomaga mi odnalezc sie na mapie.
  * Stad dodatkowe metody, ktorych nie bylo. Tobie nie powinno

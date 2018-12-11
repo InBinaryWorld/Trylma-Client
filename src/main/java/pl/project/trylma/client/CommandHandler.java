@@ -7,6 +7,7 @@ import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.PlayerOptions;
 import pl.project.trylma.models.Result;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -35,7 +36,7 @@ public class CommandHandler extends Thread {
     String command;
     try {
       while (true) {
-        object = in.readObject();
+          object = in.readObject();
         if (object instanceof String) {
           command = (String)object;
           if (command.equals("SET_ID")) {
@@ -43,7 +44,15 @@ public class CommandHandler extends Thread {
           } else if (command.equals("SET_SERVER_OPTIONS")) {
             Platform.runLater(() ->client.setServerOptions());
           } else if (command.equals("MESSAGE")) {
-            client.setMessage((String) in.readObject());
+            Platform.runLater(()-> {
+              try {
+                client.setMessage((String) in.readObject());
+              } catch (IOException e) {
+                e.printStackTrace();
+              } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+              }
+            });
           } else if (command.equals("YOUR_MOVE")) {
             client.myTurn();
           } else if (command.equals("DO_MOVE")) {

@@ -1,10 +1,13 @@
 package pl.project.trylma.models;
 
+import java.io.Serializable;
+
 /**
  * Dodalem pare metod potrzebnych w board.
  * Zmienilem nazwe z Move na Movement.
  */
-public class Movement {
+public class Movement implements Serializable {
+  static final long serialVersionUID = 1588980448693010399L;
   private Field from;
   private Coord to;
 
