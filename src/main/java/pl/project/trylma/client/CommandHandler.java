@@ -66,9 +66,7 @@ public class CommandHandler extends Thread {
             out.writeObject("ERROR");
         }
       }
-    } catch (IOException e1) {
-      e1.printStackTrace();
-    } catch (ClassNotFoundException e1) {
+    } catch (IOException | ClassNotFoundException e1) {
       e1.printStackTrace();
     }
     try {
@@ -91,6 +89,13 @@ public class CommandHandler extends Thread {
       out.writeObject(playerOptions);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  public void disconnect() {
+    try {
+      socket.close();
+    } catch (IOException e) {
     }
   }
 }

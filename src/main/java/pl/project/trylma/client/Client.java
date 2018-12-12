@@ -13,6 +13,7 @@ public class Client extends Application {
      TrylmaClient trylmaClient = new TrylmaClient();
 //    trylmaClient.getGui().refresh();
       primaryStage = trylmaClient.getGui();
+      primaryStage.setOnCloseRequest(e -> TrylmaClient.getCommandHandler().disconnect());
       primaryStage.show();
 //    Field field = new Field(new Coord(0, 4), Owner.FIRST);
 //    Coord coord = new Coord(7, 5);

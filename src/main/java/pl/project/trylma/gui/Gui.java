@@ -152,6 +152,7 @@ public class Gui extends Stage {
             if (oldCoord != null) {
               try {
                 commandHandler.sendMove(new Movement(oldCoord, newCoord, owner));
+                oldCoord=null;
               } catch (Exception f) {
                 f.printStackTrace();
               }

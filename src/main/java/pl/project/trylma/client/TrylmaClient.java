@@ -21,8 +21,13 @@ class TrylmaClient {
   TrylmaClient(){
     commandHandler = new CommandHandler(this);
     gui = new Gui();
+
     gui.setCommandHandler(this.commandHandler);
     commandHandler.start();
+  }
+
+  public static CommandHandler getCommandHandler() {
+    return commandHandler;
   }
 
   public void setMovement(Movement movement) {
@@ -139,6 +144,10 @@ class TrylmaClient {
   }
 
   void endGame(Result result) {
+   Platform.runLater(() -> {
+     setMessage(result.name());
+     commandHandler.disconnect();
+   });
     //metoda Informuje o końcu gry z danym rezultatem.
   }
 }
