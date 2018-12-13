@@ -2,11 +2,14 @@ package pl.project.trylma.gui;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.project.trylma.client.CommandHandler;
 import pl.project.trylma.models.Coord;
@@ -28,10 +31,12 @@ public class Gui extends Stage {
 
   public Gui() {
     pane = new BorderPane();
-    scene = new Scene(pane, 800, 550);
+    scene = new Scene(pane, 600, 600);
     label = new Label("Welcome!");
+    this.sizeToScene();
     setTitle("Trylma");
     setLayout();
+    pane.setStyle("-fx-base: rgba(60, 60, 60, 255)");
   }
 
   public void setFields(int[][] arr) {
@@ -44,10 +49,18 @@ public class Gui extends Stage {
 
   private void setLayout() {
     setScene(scene);
-    sizeToScene();
+    label.setFont(new Font("Courier New", 16));
     HBox hBox = new HBox();
+    Button exitButton = new Button(" Skip ");
+    exitButton.setOnAction(e -> commandHandler.sendMove(null));
+    VBox leftVbox = new VBox(this.label);
+    leftVbox.setAlignment(Pos.CENTER);
+    leftVbox.setMinWidth(pane.getWidth()/2);
+    VBox rightVbox = new VBox(exitButton);
+    rightVbox.setMinWidth(pane.getWidth()/2);
+    rightVbox.setAlignment(Pos.CENTER);
     hBox.setPadding(new Insets(10));
-    hBox.getChildren().addAll(label);
+    hBox.getChildren().addAll(leftVbox, rightVbox);
     pane.setTop(hBox);
   }
 
@@ -57,14 +70,14 @@ public class Gui extends Stage {
 
   private void setBoard() {
     Pane pane = new Pane();
-    pane.setStyle("-fx-background-color: white");
+    pane.setStyle("-fx-background-color: lightgray");
     int ArrayXSize = arr[0].length;
     int ArrayYSize = arr.length;
 
     circles = new Circle[ArrayYSize][ArrayXSize];
 
     double WidthUnit = this.pane.getWidth() / ArrayXSize;
-    double HeightUnit = this.pane.getHeight() / ArrayYSize;
+    double HeightUnit = (this.pane.getHeight()-50)/ ArrayYSize;
     double x = WidthUnit / 2;
     double y = HeightUnit / 2;
     Circle circle;
@@ -72,37 +85,37 @@ public class Gui extends Stage {
       for (int j = 0; j < ArrayXSize; j++) {
         switch (arr[i][j]) {
           case 1:
-            circle = new Circle(x, y, 15, Color.RED);
+            circle = new Circle(x+10, y, 15, Color.RED);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 2:
-            circle = new Circle(x, y, 15, Color.BLUE);
+            circle = new Circle(x+10, y, 15, Color.BLUE);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 3:
-            circle = new Circle(x, y, 15, Color.GREEN);
+            circle = new Circle(x+10, y, 15, Color.GREEN);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 4:
-            circle = new Circle(x, y, 15, Color.BLACK);
+            circle = new Circle(x+10, y, 15, Color.BLACK);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 5:
-            circle = new Circle(x, y, 15, Color.VIOLET);
+            circle = new Circle(x+10, y, 15, Color.VIOLET);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 6:
-            circle = new Circle(x, y, 15, Color.ORANGE);
+            circle = new Circle(x+10, y, 15, Color.ORANGE);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 7:
-            circle = new Circle(x, y, 15, Color.TRANSPARENT);
+            circle = new Circle(x+10, y, 15, Color.TRANSPARENT);
             circles[i][j] = circle;
             circle.setStroke(Color.BROWN);
             pane.getChildren().add(circle);

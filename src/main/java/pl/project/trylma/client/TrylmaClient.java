@@ -58,7 +58,6 @@ class TrylmaClient {
     dialog.setTitle("Trylma");
     dialog.setHeaderText("Number of players");
     dialog.setContentText("Choose number of real players:");
-
     Optional<Integer> result = dialog.showAndWait();
 
     if (result.isPresent()) {
@@ -102,17 +101,13 @@ class TrylmaClient {
   }
 
   void setServerOptions() {
-    ///Metoda wywołana tylko dla pierwszego gracza
-    // który podłączy sie do serwera.
-    // wywołanie tej metody oznacza ze serwer czeka
-    // aż gracz podejmię decyjze o ilości graczy.
-    // Po podjęciu decyzji client wysyła obiekt PlayerOptions
-    //  wykonując : commandHandler.sendPlayersOptions(.....);
-    // wywołanie powyższej funkcji może odbyć sie
-    // z dowolnego miejsca w programie.
-    int real = numOfReal();
-    int bot = numOfBot(real);
-    Platform.runLater(() -> commandHandler.sendPlayersOptions(new PlayerOptions(bot, real)));
+    try {
+      int real = numOfReal();
+      int bot = numOfBot(real);
+      Platform.runLater(() -> commandHandler.sendPlayersOptions(new PlayerOptions(bot, real)));
+    } catch (IndexOutOfBoundsException e) {
+      System.exit(0);
+    }
   }
 
   void setMessage(String message) {
@@ -120,17 +115,6 @@ class TrylmaClient {
   }
 
   void myTurn() {
-    // wywołanie tej metody oznacza ze serwer czeka
-    // aż gracz podejmię decyjze o ruchu.
-    // Po podjęciu decyzji client wysyła obiekt Move
-    //  wykonując : commandHandler.sendMove(.....);
-    // wywołanie powyższej funkcji może odbyć sie
-    // z dowolnego miejsca w programie.
-    // np. w Handlerze przycisku "wykonaj ruch" na GUI
-    // Uwaga!! W tym momencie nie zatwierdzamy ruchu
-    // na planszy klienta. Jeżeli ruch bedzie poprawny
-    // to server wywoła metodę doMove(Move move)
-    // u każdego gracza w grze.
     gui.activate(id);
   }
 

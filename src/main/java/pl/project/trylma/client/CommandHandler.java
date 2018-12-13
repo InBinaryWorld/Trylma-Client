@@ -67,7 +67,9 @@ public class CommandHandler extends Thread {
         }
       }
     } catch (IOException | ClassNotFoundException e1) {
-      e1.printStackTrace();
+      if (!e1.getMessage().equals("Socket closed")) {
+        e1.printStackTrace();
+      }
     }
     try {
       socket.close();
