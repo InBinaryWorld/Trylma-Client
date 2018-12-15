@@ -13,6 +13,7 @@ public class Client extends Application {
      TrylmaClient trylmaClient = new TrylmaClient();
       primaryStage = trylmaClient.getGui();
       primaryStage.setOnCloseRequest(e -> TrylmaClient.getCommandHandler().disconnect());
+      primaryStage.setResizable(false);
       primaryStage.show();
   }
 }

@@ -8,6 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -31,7 +34,7 @@ public class Gui extends Stage {
 
   public Gui() {
     pane = new BorderPane();
-    scene = new Scene(pane, 600, 600);
+    scene = new Scene(pane, 550, 600);
     label = new Label("Welcome!");
     this.sizeToScene();
     setTitle("Trylma");
@@ -73,7 +76,8 @@ public class Gui extends Stage {
     pane.setStyle("-fx-background-color: lightgray");
     int ArrayXSize = arr[0].length;
     int ArrayYSize = arr.length;
-
+    final int horizontalShift = 20;
+    final int verticalShift = 15;
     circles = new Circle[ArrayYSize][ArrayXSize];
 
     double WidthUnit = this.pane.getWidth() / ArrayXSize;
@@ -81,43 +85,78 @@ public class Gui extends Stage {
     double x = WidthUnit / 2;
     double y = HeightUnit / 2;
     Circle circle;
+
+    Stop[] redStop = new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.TOMATO)};
+    LinearGradient lgRed = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, redStop);
+
+    Stop[] blueStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.STEELBLUE)};
+    LinearGradient lgBlue = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, blueStop);
+
+    Stop[] greenStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.GREEN)};
+    LinearGradient lgGreen = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, greenStop);
+
+    Stop[] violetStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.PALEVIOLETRED)};
+    LinearGradient lgViolet = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, violetStop);
+
+    Stop[] orangeStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.BROWN)};
+    LinearGradient lgOrange = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, orangeStop);
+
+    Stop[] yellowStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.DARKGOLDENROD)};
+    LinearGradient lgYellow = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, yellowStop);
+
+    Stop[] whiteStop= new Stop[] { new Stop(0, Color.LIGHTGREY), new Stop(1, Color.WHITE)};
+    LinearGradient lgWhite = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, whiteStop);
+
     for (int i = 0; i < ArrayYSize; i++) {
       for (int j = 0; j < ArrayXSize; j++) {
         switch (arr[i][j]) {
           case 1:
-            circle = new Circle(x+10, y, 15, Color.RED);
+            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
+            circle.setFill(lgRed);
+            circle.setStroke(Color.TOMATO);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 2:
-            circle = new Circle(x+10, y, 15, Color.BLUE);
+            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
+            circle.setFill(lgBlue);
+            circle.setStroke(Color.STEELBLUE);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 3:
-            circle = new Circle(x+10, y, 15, Color.GREEN);
+            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
+            circle.setFill(lgGreen);
+            circle.setStroke(Color.GREEN);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 4:
-            circle = new Circle(x+10, y, 15, Color.BLACK);
+            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
+            circle.setFill(lgViolet);
+            circle.setStroke(Color.PALEVIOLETRED);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 5:
-            circle = new Circle(x+10, y, 15, Color.VIOLET);
+            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
+            circle.setFill(lgOrange);
+            circle.setStroke(Color.BROWN);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 6:
-            circle = new Circle(x+10, y, 15, Color.ORANGE);
+            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
+            circle.setFill(lgYellow);
+            circle.setStroke(Color.DARKGOLDENROD);
             circles[i][j] = circle;
             pane.getChildren().add(circle);
             break;
           case 7:
-            circle = new Circle(x+10, y, 15, Color.TRANSPARENT);
+            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
             circles[i][j] = circle;
-            circle.setStroke(Color.BROWN);
+            circle.setStroke(Color.WHITE);
+            circle.setFill(lgWhite);
             pane.getChildren().add(circle);
         }
         x += WidthUnit;
