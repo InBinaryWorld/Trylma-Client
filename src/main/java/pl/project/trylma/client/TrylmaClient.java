@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-class TrylmaClient {
+public class TrylmaClient {
   private static CommandHandler commandHandler;
-  private Owner id;
+  private static Owner id;
   private Gui gui;
   private static Movement movement;
+  private static boolean myTurn;
 
   TrylmaClient(){
     commandHandler = new CommandHandler(this);
@@ -30,6 +31,14 @@ class TrylmaClient {
     return commandHandler;
   }
 
+  public static boolean isMyTurn() {
+    return myTurn;
+  }
+
+  public static void setMyTurn(boolean myTurn) {
+    TrylmaClient.myTurn = myTurn;
+  }
+
   public void setMovement(Movement movement) {
     this.movement = movement;
   }
@@ -40,9 +49,10 @@ class TrylmaClient {
 
   void setId(Owner id) {
     this.id=id;
+    gui.setFooter(id);
   }
 
-  public Owner getId() {
+  public static Owner getId() {
     return id;
   }
 
@@ -115,6 +125,7 @@ class TrylmaClient {
   }
 
   void myTurn() {
+    setMyTurn(true);
     gui.activate(id);
   }
 
@@ -134,4 +145,5 @@ class TrylmaClient {
    });
     //metoda Informuje o końcu gry z danym rezultatem.
   }
+
 }

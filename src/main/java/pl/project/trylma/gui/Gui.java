@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -15,6 +16,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.project.trylma.client.CommandHandler;
+import pl.project.trylma.client.TrylmaClient;
+import pl.project.trylma.gui.circles.*;
 import pl.project.trylma.models.Coord;
 import pl.project.trylma.models.Movement;
 import pl.project.trylma.models.Owner;
@@ -34,12 +37,13 @@ public class Gui extends Stage {
 
   public Gui() {
     pane = new BorderPane();
-    scene = new Scene(pane, 550, 600);
+    scene = new Scene(pane, 550, 650);
     label = new Label("Welcome!");
     this.sizeToScene();
     setTitle("Trylma");
     setLayout();
     pane.setStyle("-fx-base: rgba(60, 60, 60, 255)");
+    getIcons().add(new Image("/upIcon.png"));
   }
 
   public void setFields(int[][] arr) {
@@ -50,16 +54,51 @@ public class Gui extends Stage {
     this.commandHandler = commandHandler;
   }
 
-  private void setLayout() {
+  private Circle assignCircle(Owner owner) {
+    switch (owner) {
+      case FIRST:
+        return new RedCircle(10);
+      case SECOND:
+        return new BlueCircle(10);
+      case THIRD:
+        return new GreenCircle(10);
+      case FOURTH:
+        return new PurpleCircle(10);
+      case FIFTH:
+        return new BrownCircle(10);
+      case SIXTH:
+        return new GoldenCircle(10);
+    }
+    return null;
+  }
+
+  public void setFooter(Owner owner) {
+    HBox footer = new HBox();
+    footer.setPadding(new Insets(10));
+    VBox vBoxleft = new VBox();
+    Label label = new Label("Your pawns: ");
+    label.setFont(new Font("Courier New", 16));
+    vBoxleft.getChildren().addAll(label);
+    VBox vBoxright = new VBox(assignCircle(owner));
+    footer.getChildren().addAll(vBoxleft, vBoxright);
+    this.pane.setBottom(footer);
+  }
+
+  public void setLayout() {
     setScene(scene);
     label.setFont(new Font("Courier New", 16));
     HBox hBox = new HBox();
-    Button exitButton = new Button(" Skip ");
-    exitButton.setOnAction(e -> commandHandler.sendMove(null));
+    Button skip = new Button(" Skip ");
+    skip.setOnAction(e -> {
+      if(TrylmaClient.isMyTurn()) {
+        commandHandler.sendMove(null);
+        TrylmaClient.setMyTurn(false);
+      }
+    });
     VBox leftVbox = new VBox(this.label);
     leftVbox.setAlignment(Pos.CENTER);
     leftVbox.setMinWidth(pane.getWidth()/2);
-    VBox rightVbox = new VBox(exitButton);
+    VBox rightVbox = new VBox(skip);
     rightVbox.setMinWidth(pane.getWidth()/2);
     rightVbox.setAlignment(Pos.CENTER);
     hBox.setPadding(new Insets(10));
@@ -71,98 +110,52 @@ public class Gui extends Stage {
     this.label.setText(label);
   }
 
-  private void setBoard() {
-    Pane pane = new Pane();
-    pane.setStyle("-fx-background-color: lightgray");
-    int ArrayXSize = arr[0].length;
-    int ArrayYSize = arr.length;
+  private void updateCircles() {
+    final int ArrayXSize = arr[0].length;
+    final int ArrayYSize = arr.length;
+    circles = new Circle[ArrayYSize][ArrayXSize];
     final int horizontalShift = 20;
     final int verticalShift = 15;
-    circles = new Circle[ArrayYSize][ArrayXSize];
-
-    double WidthUnit = this.pane.getWidth() / ArrayXSize;
-    double HeightUnit = (this.pane.getHeight()-50)/ ArrayYSize;
-    double x = WidthUnit / 2;
-    double y = HeightUnit / 2;
-    Circle circle;
-
-    Stop[] redStop = new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.TOMATO)};
-    LinearGradient lgRed = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, redStop);
-
-    Stop[] blueStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.STEELBLUE)};
-    LinearGradient lgBlue = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, blueStop);
-
-    Stop[] greenStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.GREEN)};
-    LinearGradient lgGreen = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, greenStop);
-
-    Stop[] violetStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.PALEVIOLETRED)};
-    LinearGradient lgViolet = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, violetStop);
-
-    Stop[] orangeStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.BROWN)};
-    LinearGradient lgOrange = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, orangeStop);
-
-    Stop[] yellowStop= new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.DARKGOLDENROD)};
-    LinearGradient lgYellow = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, yellowStop);
-
-    Stop[] whiteStop= new Stop[] { new Stop(0, Color.LIGHTGREY), new Stop(1, Color.WHITE)};
-    LinearGradient lgWhite = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, whiteStop);
-
+    final double VerticalUnit = this.pane.getWidth() / ArrayXSize;
+    final double HorizontalUnit = (this.pane.getHeight()-75)/ ArrayYSize;
+    double x = VerticalUnit / 2;
+    double y = HorizontalUnit / 2;
     for (int i = 0; i < ArrayYSize; i++) {
       for (int j = 0; j < ArrayXSize; j++) {
-        switch (arr[i][j]) {
-          case 1:
-            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
-            circle.setFill(lgRed);
-            circle.setStroke(Color.TOMATO);
-            circles[i][j] = circle;
-            pane.getChildren().add(circle);
-            break;
-          case 2:
-            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
-            circle.setFill(lgBlue);
-            circle.setStroke(Color.STEELBLUE);
-            circles[i][j] = circle;
-            pane.getChildren().add(circle);
-            break;
-          case 3:
-            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
-            circle.setFill(lgGreen);
-            circle.setStroke(Color.GREEN);
-            circles[i][j] = circle;
-            pane.getChildren().add(circle);
-            break;
-          case 4:
-            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
-            circle.setFill(lgViolet);
-            circle.setStroke(Color.PALEVIOLETRED);
-            circles[i][j] = circle;
-            pane.getChildren().add(circle);
-            break;
-          case 5:
-            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
-            circle.setFill(lgOrange);
-            circle.setStroke(Color.BROWN);
-            circles[i][j] = circle;
-            pane.getChildren().add(circle);
-            break;
-          case 6:
-            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
-            circle.setFill(lgYellow);
-            circle.setStroke(Color.DARKGOLDENROD);
-            circles[i][j] = circle;
-            pane.getChildren().add(circle);
-            break;
-          case 7:
-            circle = new Circle(x+horizontalShift, y+verticalShift, 15);
-            circles[i][j] = circle;
-            circle.setStroke(Color.WHITE);
-            circle.setFill(lgWhite);
-            pane.getChildren().add(circle);
+        switch(arr[i][j]) {
+          case 1 : circles[i][j] = new RedCircle(x+horizontalShift, y+verticalShift, 15);
+                   break;
+          case 2 : circles[i][j] = new BlueCircle(x+horizontalShift, y+verticalShift, 15);
+                   break;
+          case 3 : circles[i][j] = new GreenCircle(x+horizontalShift, y+verticalShift, 15);
+                   break;
+          case 4 : circles[i][j] = new PurpleCircle(x+horizontalShift, y+verticalShift, 15);
+                   break;
+          case 5 : circles[i][j] = new BrownCircle(x+horizontalShift, y+verticalShift, 15);
+                   break;
+          case 6 : circles[i][j] = new GoldenCircle(x+horizontalShift, y+verticalShift, 15);
+                   break;
+          case 7 : circles[i][j] = new WhiteCircle(x+horizontalShift, y+verticalShift, 15);
+                   break;
         }
-        x += WidthUnit;
+        x += VerticalUnit;
       }
-      x = WidthUnit / 2;
-      y += HeightUnit;
+      x = VerticalUnit/2;
+      y += HorizontalUnit;
+    }
+  }
+
+  private void setBoard() {
+    updateCircles();
+    final int ArrayXSize = arr[0].length;
+    final int ArrayYSize = arr.length;
+    Pane pane = new Pane();
+    pane.setStyle("-fx-background-color: lightgray");
+    for (int i = 0; i < ArrayYSize; i++) {
+      for (int j = 0; j < ArrayXSize; j++) {
+        if (circles[i][j] != null)
+          pane.getChildren().add(circles[i][j]);
+      }
     }
     Platform.runLater(()->this.pane.setCenter(pane));
   }
@@ -205,6 +198,7 @@ public class Gui extends Stage {
               try {
                 commandHandler.sendMove(new Movement(oldCoord, newCoord, owner));
                 oldCoord=null;
+                TrylmaClient.setMyTurn(false);
               } catch (Exception f) {
                 f.printStackTrace();
               }
