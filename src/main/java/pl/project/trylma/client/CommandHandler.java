@@ -7,7 +7,6 @@ import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.PlayerOptions;
 import pl.project.trylma.models.Result;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,51 +18,61 @@ public class CommandHandler extends Thread {
   private ObjectInputStream in;
   private ObjectOutputStream out;
 
+  /**
+   * Try to connect with server
+   * and set input, output streams.
+   */
   CommandHandler(TrylmaClient client) {
-    this.client=client;
+    this.client = client;
     try {
       socket = new Socket("localhost", 9001);
       out = new ObjectOutputStream(socket.getOutputStream());
       out.flush();
       in = new ObjectInputStream(socket.getInputStream());
     } catch (IOException e) {
-      e.printStackTrace();
+      System.out.println("Cannot connect to server.");
+      System.exit(0);
     }
   }
 
+  /**
+   * Listens commands from server
+   * and make appropriate actions.
+   */
   public void run() {
     Object object;
     String command;
-
     try {
+      label:
       while (true) {
-          object = in.readObject();
+        object = in.readObject();
         if (object instanceof String) {
-          command = (String)object;
+          command = (String) object;
           System.out.println(command);
-          if (command.equals("SET_ID")) {
-
-            client.setId((Owner)in.readObject());
-          } else if (command.equals("SET_SERVER_OPTIONS")) {
-            Platform.runLater(() ->client.setServerOptions());
-          } else if (command.equals("MESSAGE")) {
-            String s =(String) in.readObject();
-            Platform.runLater(()-> {
-              System.out.println("--->"+s);
-              client.setMessage(s);
-            });
-          } else if (command.equals("YOUR_MOVE")) {
-            client.myTurn();
-          } else if (command.equals("DO_MOVE")) {
-            client.doMove((Movement)in.readObject());
-          } else if (command.equals("SET_BASEBOARD")) {
-            client.start((int[][])in.readObject());
-          } else if (command.equals("END_GAME")) {
-            client.endGame((Result)in.readObject());
-            break;
+          switch (command) {
+            case "SET_ID":
+              client.setId((Owner) in.readObject());
+              break;
+            case "SET_SERVER_OPTIONS":
+              Platform.runLater(() -> client.setServerOptions());
+              break;
+            case "MESSAGE":
+              String s = (String) in.readObject();
+              Platform.runLater(() -> client.setMessage(s));
+              break;
+            case "YOUR_MOVE":
+              client.myTurn();
+              break;
+            case "DO_MOVE":
+              client.doMove((Movement) in.readObject());
+              break;
+            case "SET_BASEBOARD":
+              client.start((int[][]) in.readObject());
+              break;
+            case "END_GAME":
+              client.endGame((Result) in.readObject());
+              break label;
           }
-        } else {
-            out.writeObject("ERROR");
         }
       }
     } catch (IOException | ClassNotFoundException e1) {
@@ -78,7 +87,10 @@ public class CommandHandler extends Thread {
     }
   }
 
-  public void sendMove(Movement move)  {
+  /**
+   * Sends move to server.
+   */
+  public void sendMove(Movement move) {
     try {
       out.writeObject(move);
     } catch (IOException e) {
@@ -86,7 +98,10 @@ public class CommandHandler extends Thread {
     }
   }
 
-  public void sendPlayersOptions(PlayerOptions playerOptions){
+  /**
+   * Sends game settings to server.
+   */
+  void sendPlayersOptions(PlayerOptions playerOptions) {
     try {
       out.writeObject(playerOptions);
     } catch (IOException e) {
@@ -94,10 +109,13 @@ public class CommandHandler extends Thread {
     }
   }
 
-  public void disconnect() {
+  /**
+   * Closes socket.
+   */
+  void disconnect() {
     try {
       socket.close();
-    } catch (IOException e) {
+    } catch (IOException ignored) {
     }
   }
 }

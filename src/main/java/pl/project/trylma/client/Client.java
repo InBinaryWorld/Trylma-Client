@@ -12,7 +12,11 @@ public class Client extends Application {
   public void start(Stage primaryStage) throws Exception {
      TrylmaClient trylmaClient = new TrylmaClient();
       primaryStage = trylmaClient.getGui();
-      primaryStage.setOnCloseRequest(e -> TrylmaClient.getCommandHandler().disconnect());
+      primaryStage.setOnCloseRequest(e -> {
+        if(TrylmaClient.getCommandHandler().isAlive())
+          TrylmaClient.getCommandHandler().disconnect();
+        System.exit(0);
+      });
       primaryStage.setResizable(false);
       primaryStage.show();
   }
