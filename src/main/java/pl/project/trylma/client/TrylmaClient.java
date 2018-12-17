@@ -139,11 +139,7 @@ public class TrylmaClient {
   }
 
   void endGame(Result result) {
-   Platform.runLater(() -> {
-     setMessage(result.name());
-     commandHandler.disconnect();
-   });
-    //metoda Informuje o końcu gry z danym rezultatem.
+   Platform.runLater(() -> setMessage(result.name()));
   }
 
 }

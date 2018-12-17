@@ -48,9 +48,9 @@ public class CommandHandler extends Thread {
         object = in.readObject();
         if (object instanceof String) {
           command = (String) object;
-          System.out.println(command);
           switch (command) {
             case "SET_ID":
+              client.setId((Owner) in.readObject());
               client.setId((Owner) in.readObject());
               break;
             case "SET_SERVER_OPTIONS":
@@ -87,9 +87,7 @@ public class CommandHandler extends Thread {
     }
   }
 
-  /**
-   * Sends move to server.
-   */
+  /** Sends move to server. */
   public void sendMove(Movement move) {
     try {
       out.writeObject(move);
@@ -98,9 +96,7 @@ public class CommandHandler extends Thread {
     }
   }
 
-  /**
-   * Sends game settings to server.
-   */
+  /** Sends game settings to server. */
   void sendPlayersOptions(PlayerOptions playerOptions) {
     try {
       out.writeObject(playerOptions);
@@ -109,9 +105,7 @@ public class CommandHandler extends Thread {
     }
   }
 
-  /**
-   * Closes socket.
-   */
+  /** Closes socket. */
   void disconnect() {
     try {
       socket.close();
