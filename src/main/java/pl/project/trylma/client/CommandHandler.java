@@ -7,6 +7,7 @@ import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.PlayerOptions;
 import pl.project.trylma.models.Result;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -25,7 +26,9 @@ public class CommandHandler extends Thread {
   CommandHandler(TrylmaClient client) {
     this.client = client;
     try {
-      socket = new Socket("localhost", 9001);
+      String address;
+      address = JOptionPane.showInputDialog("Enter Server IP address:","localhost" );
+      socket = new Socket(address, 9001);
       out = new ObjectOutputStream(socket.getOutputStream());
       out.flush();
       in = new ObjectInputStream(socket.getInputStream());
@@ -50,7 +53,6 @@ public class CommandHandler extends Thread {
           command = (String) object;
           switch (command) {
             case "SET_ID":
-              client.setId((Owner) in.readObject());
               client.setId((Owner) in.readObject());
               break;
             case "SET_SERVER_OPTIONS":
