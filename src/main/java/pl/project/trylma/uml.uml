@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="227.0">pl.project.trylma.gui.circles.BrownCircle</node>
+    <node x="0.0" y="153.0">pl.project.trylma.gui.circles.GoldenCircle</node>
+    <node x="252.0" y="375.0">pl.project.trylma.client.Client</node>
+    <node x="0.0" y="0.0">pl.project.trylma.models.Coord</node>
+    <node x="309.0" y="227.0">pl.project.trylma.gui.circles.GreenCircle</node>
+    <node x="127.0" y="375.0">pl.project.trylma.models.Result</node>
+    <node x="156.0" y="227.0">pl.project.trylma.gui.circles.WhiteCircle</node>
+    <node x="294.0" y="301.0">pl.project.trylma.gui.circles.RedCircle</node>
+    <node x="375.0" y="375.0">pl.project.trylma.gui.Gui</node>
+    <node x="315.0" y="0.0">pl.project.trylma.models.PlayerOptions</node>
+    <node x="0.0" y="301.0">pl.project.trylma.models.Movement</node>
+    <node x="161.0" y="153.0">pl.project.trylma.client.TrylmaClient</node>
+    <node x="0.0" y="375.0">pl.project.trylma.models.Owner</node>
+    <node x="149.0" y="301.0">pl.project.trylma.gui.circles.BlueCircle</node>
+    <node x="125.0" y="0.0">pl.project.trylma.client.CommandHandler</node>
+    <node x="3.5" y="79.0">pl.project.trylma.models.Field</node>
+    <node x="320.0" y="153.0">pl.project.trylma.gui.circles.PurpleCircle</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pl.project.trylma.models.Field" target="pl.project.trylma.models.Coord">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="0.0" y="0.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

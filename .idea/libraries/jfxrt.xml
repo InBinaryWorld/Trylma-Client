@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jfxrt">
+    <CLASSES>
+      <root url="jar://C:/Program Files/Java/jre-10.0.2/lib/jfxrt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
